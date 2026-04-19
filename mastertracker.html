@@ -1,0 +1,587 @@
+Here is a combined HTML document that creates a single dashboard for UPSC History, Polity, Geography, and Economics. It features dark mode, 8 revisions, and manual date entry for every topic.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>UPSC Master Tracker | History | Polity | Geography | Economics | 8-Revision with Dates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            background: #0f1217;
+            color: #e8edf2;
+            padding: 20px;
+            transition: background 0.2s;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #f0b27a, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .sub {
+            text-align: center;
+            color: #9aaebf;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #2a2f3a;
+            padding-bottom: 12px;
+        }
+        .tab-btn {
+            background: #1e232c;
+            border: none;
+            color: #b9c7d9;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tab-btn.active {
+            background: #2c3e2f;
+            color: #f5e7c8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .tab-btn:hover:not(.active) {
+            background: #2a2f3c;
+            color: #f0f0f0;
+        }
+
+        /* Timeline card (dark) */
+        .timeline-card {
+            background: #161c24;
+            border-radius: 28px;
+            padding: 18px;
+            margin-bottom: 25px;
+            border: 1px solid #2a323e;
+        }
+        .date-panel {
+            background: #0f141c;
+            padding: 12px 16px;
+            border-radius: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .date-panel input {
+            background: #1e2a32;
+            border: 1px solid #3a4552;
+            padding: 8px 14px;
+            border-radius: 30px;
+            color: #e8edf2;
+        }
+        .date-panel button {
+            background: #2c6e4f;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+        }
+        .rev-card {
+            background: #0f151d;
+            border-radius: 20px;
+            padding: 12px;
+            text-align: center;
+            border-top: 4px solid #d4af37;
+        }
+        .rev-num {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Section & table styling (dark) */
+        .section-card {
+            background: #12181f;
+            border-radius: 24px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            border: 1px solid #262e38;
+        }
+        .section-title {
+            background: #0b1017;
+            padding: 12px 18px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 1px solid #2a3440;
+            color: #e6cba0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+        }
+        th {
+            background: #0e151d;
+            padding: 10px 6px;
+            text-align: left;
+            border-bottom: 1px solid #28313e;
+            color: #cfdfed;
+        }
+        td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #1f2a33;
+            vertical-align: middle;
+        }
+        .topic-cell {
+            font-weight: 500;
+            color: #e0e9f0;
+        }
+        .rev-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        .rev-btn, .first-btn, .mains-btn {
+            background: #1f2a33;
+            border-radius: 25px;
+            padding: 3px 8px;
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .rev-btn input, .first-btn input, .mains-btn input {
+            width: 14px;
+            height: 14px;
+            accent-color: #d4af37;
+            cursor: pointer;
+        }
+        .date-picker-small {
+            display: inline-flex;
+            margin-left: 6px;
+        }
+        .date-picker-small input {
+            background: #1a232e;
+            border: 1px solid #3e4a58;
+            border-radius: 20px;
+            padding: 2px 6px;
+            font-size: 10px;
+            color: #e8edf2;
+            width: 100px;
+        }
+        .progress-container {
+            background: #10171f;
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        .progress-bar {
+            background: #2a323e;
+            border-radius: 30px;
+            height: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-fill {
+            background: #d4af37;
+            width: 0%;
+            height: 100%;
+            transition: width 0.2s;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .reset-btn {
+            background: #2c1e1a;
+            border: 1px solid #9e5a3a;
+            padding: 6px 18px;
+            border-radius: 30px;
+            color: #f0bc9e;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            font-size: 10px;
+            color: #6e7f8f;
+            margin-top: 20px;
+        }
+        @media (max-width: 750px) {
+            .date-picker-small input { width: 80px; }
+            .rev-btn { padding: 2px 5px; font-size: 9px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 UPSC Master Tracker</h1>
+    <div class="sub">History · Polity · Geography · Economics | 8 Revisions + Manual Dates | Dark Mode</div>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" data-subject="history">📜 History</button>
+        <button class="tab-btn" data-subject="polity">⚖️ Polity</button>
+        <button class="tab-btn" data-subject="geography">🌍 Geography</button>
+        <button class="tab-btn" data-subject="economics">📈 Economics</button>
+    </div>
+
+    <!-- Timeline info (global helper) -->
+    <div class="timeline-card" id="globalTimelineCard">
+        <div class="date-panel">
+            <label>📅 Global default date (for empty fields):</label>
+            <input type="date" id="globalDefaultDate" value="2025-04-15">
+            <button id="applyGlobalDateBtn">Apply to empty dates (current subject)</button>
+        </div>
+        <div class="timeline-grid" id="revisionTimelineHint">
+            <div class="rev-card"><div class="rev-num">📖 R0</div><div>1st Reading</div></div>
+            <div class="rev-card"><div class="rev-num">🔄 R1-R8</div><div>8 spaced revisions</div></div>
+            <div class="rev-card"><div class="rev-num">✍️ Mains</div><div>Answer writing</div></div>
+        </div>
+        <p style="font-size: 12px; margin-top: 10px; background: #0b1117; padding: 6px 12px; border-radius: 18px;">✅ Each topic: 1st Reading + 8 Revisions + Mains answer. Click any date field to set custom target date.</p>
+    </div>
+
+    <!-- Dynamic content area -->
+    <div id="trackerRoot"></div>
+
+    <div class="progress-container">
+        <div class="stats-row">
+            <div><strong>📊 Subject Progress:</strong> <span id="activePercent">0</span>%</div>
+            <button class="reset-btn" id="resetSubjectBtn">🗑️ Reset Current Subject</button>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="activeProgressFill"></div></div>
+        <div id="progressDetailText" style="margin-top: 8px; font-size: 12px;"></div>
+    </div>
+    <footer>Auto-save in browser. Dark theme designed for long study sessions. Switch tabs — progress preserved per subject.</footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // COMPLETE SYLLABUS DATA (History, Polity, Geography, Economics)
+    // --------------------------------------------------------------
+    const SUBJECTS = {
+        history: {
+            name: "History",
+            sections: [
+                { name: "🏛️ Ancient India", topics: ["Indus Valley Civilization", "Vedic Period & Later Vedic", "Mahajanapadas & Magadha", "Mauryan Empire (Chandragupta, Ashoka)", "Post-Mauryan: Sungas, Satavahanas, Kushanas", "Gupta Empire – Golden Age", "Harshavardhana & Southern Kingdoms", "Buddhism & Jainism"] },
+                { name: "🏰 Medieval India", topics: ["Rajput States & Arab Invasions", "Delhi Sultanate (Slave to Lodi)", "Bhakti & Sufi Movements", "Vijayanagara & Bahmani", "Mughal Empire (Babur to Aurangzeb)", "Akbar's policies & Mansabdari", "Decline of Mughals & Maratha Empire", "Provincial Kingdoms"] },
+                { name: "⚔️ Modern India", topics: ["European Penetration & British Expansion", "Revolt of 1857", "Socio-Religious Reforms", "INC – Moderate & Extremist Phase", "Swadeshi & Partition of Bengal", "Gandhian Era (Non-Cooperation, CDM, QIM)", "Revolutionary nationalism, Subhash Bose", "Partition & Integration of States", "Post-Independence consolidation"] },
+                { name: "🌍 World History", topics: ["French Revolution", "Industrial Revolution", "World War I & II", "Cold War & UN", "Unification of Italy & Germany", "Fascism & Nazism", "Decolonisation"] }
+            ]
+        },
+        polity: {
+            name: "Polity",
+            sections: [
+                { name: "Constitutional Framework", topics: ["Constituent Assembly", "Preamble", "Union & Territory (Art 1-4)", "Citizenship (Art 5-11)", "Fundamental Rights (12-35)", "DPSP (36-51)", "Fundamental Duties"] },
+                { name: "Central & State Government", topics: ["President & Vice President", "Parliament (Lok Sabha, Rajya Sabha)", "Prime Minister & Council of Ministers", "State Legislature", "Supreme Court & High Courts", "Judicial Review & PIL"] },
+                { name: "Federalism & Local Bodies", topics: ["Centre-State Relations", "Finance Commission", "Inter-State Council", "Panchayati Raj (73rd)", "Municipalities (74th)", "5th & 6th Schedules"] },
+                { name: "Constitutional Bodies", topics: ["Election Commission", "UPSC", "CAG", "NITI Aayog", "NHRC", "CIC", "NCSC/NCST/Lokpal"] },
+                { name: "Amendments & Schedules", topics: ["Major Amendments (42nd, 44th, 73rd, 74th, 101st)", "Basic Structure Doctrine", "Schedules 1-12", "Anti-Defection Law"] }
+            ]
+        },
+        geography: {
+            name: "Geography",
+            sections: [
+                { name: "Physical Geography", topics: ["Origin & Evolution of Earth", "Geomorphic Processes (endogenic/exogenic)", "Landforms & their evolution", "Distribution of Oceans & Continents", "Climatology (Atmosphere, pressure belts)", "Cyclones & Jet streams", "Oceanography (currents, tides)", "Biogeography (soil, vegetation)"] },
+                { name: "Indian Geography", topics: ["Structure & Relief (Himalayas, Peninsular)", "Drainage system (Ganga, Indus, Brahmaputra)", "Climate – Monsoon mechanism", "Soils of India", "Natural Vegetation & Wildlife", "Agriculture – Cropping patterns, revolutions", "Mineral & Energy resources", "Industries & Transport"] },
+                { name: "Human & Economic Geography", topics: ["Population distribution & density", "Migration & urbanization", "Settlements (rural/urban)", "Economic activities (primary to tertiary)", "World resources (agriculture, minerals)", "Regional development & planning", "Environmental geography (climate change)"] },
+                { name: "Map & Cartography", topics: ["Latitudes & longitudes", "Map projections", "Remote sensing & GIS", "Topographic maps", "Important places (dams, passes, cities)"] }
+            ]
+        },
+        economics: {
+            name: "Economics",
+            sections: [
+                { name: "Micro & Macro Economics", topics: ["National Income (GDP, GNP, NNP)", "Inflation (CPI, WPI)", "Monetary Policy (RBI, MPC, Repo, CRR)", "Fiscal Policy & FRBM", "Public Finance (Taxation, GST)", "Budget & deficits"] },
+                { name: "Banking & Financial Markets", topics: ["RBI functions & tools", "Commercial banks, NPAs", "Capital market (SEBI, FII)", "Money market (T-bills, CP)", "Insurance (IRDAI, NPS)"] },
+                { name: "Indian Economy & Development", topics: ["Poverty & Unemployment (PLFS)", "Inclusive growth & SDGs", "Agriculture (MSP, PDS, e-NAM)", "Industrial policy (PLI, MSME)", "Infrastructure (NIP, Gati Shakti)"] },
+                { name: "External Sector", topics: ["Balance of Payments", "Exchange rate (NEER, REER)", "WTO & FTAs", "IMF, World Bank, ADB"] },
+                { name: "Recent Schemes & Budget", topics: ["Economic Survey", "Union Budget (key terms)", "PM-KISAN, Startup India", "Recent committees"] }
+            ]
+        }
+    };
+
+    // Storage keys per subject
+    const STORAGE_KEYS = {
+        history: "upsc_master_history_v1",
+        polity: "upsc_master_polity_v1",
+        geography: "upsc_master_geography_v1",
+        economics: "upsc_master_economics_v1"
+    };
+
+    let currentSubject = "history";
+    let subjectDataCache = {};
+
+    // Helper: build empty tracker for a subject
+    function buildEmptyTrackerForSubject(subj) {
+        let tracker = {};
+        let id = 0;
+        const sections = SUBJECTS[subj].sections;
+        for (let sec of sections) {
+            for (let topic of sec.topics) {
+                let key = `${id}::${topic}`;
+                tracker[key] = {
+                    first: false,
+                    firstDate: "",
+                    revs: [],
+                    mains: false,
+                    mainsDate: ""
+                };
+                let revArr = [];
+                for (let r = 0; r < 8; r++) revArr.push({ completed: false, date: "" });
+                tracker[key].revs = revArr;
+                id++;
+            }
+        }
+        return tracker;
+    }
+
+    function loadSubject(subj) {
+        if (subjectDataCache[subj]) return subjectDataCache[subj];
+        let saved = localStorage.getItem(STORAGE_KEYS[subj]);
+        let data = null;
+        if (saved) {
+            try {
+                let parsed = JSON.parse(saved);
+                if (parsed && typeof parsed === "object") data = parsed;
+                else data = buildEmptyTrackerForSubject(subj);
+            } catch(e) { data = buildEmptyTrackerForSubject(subj); }
+        } else {
+            data = buildEmptyTrackerForSubject(subj);
+        }
+        // ensure all topics exist (in case syllabus updated)
+        let fresh = buildEmptyTrackerForSubject(subj);
+        for (let key in fresh) {
+            if (!data[key]) data[key] = fresh[key];
+            else {
+                if (!data[key].revs || data[key].revs.length !== 8) data[key].revs = fresh[key].revs;
+                if (data[key].firstDate === undefined) data[key].firstDate = "";
+                if (data[key].mainsDate === undefined) data[key].mainsDate = "";
+            }
+        }
+        subjectDataCache[subj] = data;
+        return data;
+    }
+
+    function saveSubject(subj) {
+        if (subjectDataCache[subj]) {
+            localStorage.setItem(STORAGE_KEYS[subj], JSON.stringify(subjectDataCache[subj]));
+        }
+        updateProgressUI(subj);
+    }
+
+    function renderCurrentSubject() {
+        const container = document.getElementById("trackerRoot");
+        if (!container) return;
+        const subj = currentSubject;
+        const data = loadSubject(subj);
+        const sections = SUBJECTS[subj].sections;
+        let html = "";
+        let topicCounter = 0;
+        for (let sec of sections) {
+            html += `<div class="section-card"><div class="section-title">📌 ${sec.name}</div>
+                     <table><thead><tr>
+                        <th style="width:35%">Topic</th><th style="width:14%">1st Reading + Date</th>
+                        <th style="width:40%">8 Revisions (R1-R8) + custom dates</th><th style="width:11%">Mains + Date</th>
+                     </tr></thead><tbody>`;
+            for (let topic of sec.topics) {
+                let key = `${topicCounter}::${topic}`;
+                let entry = data[key];
+                if (!entry) { entry = { first: false, firstDate: "", revs: Array(8).fill({completed:false,date:""}), mains: false, mainsDate: "" }; data[key]=entry; }
+                while(entry.revs.length < 8) entry.revs.push({completed:false,date:""});
+                
+                let firstChecked = entry.first ? "checked" : "";
+                let firstDateVal = entry.firstDate || "";
+                let firstHtml = `<div><label class="first-btn"><input type="checkbox" class="first-cb" data-key="${key}" ${firstChecked}> R0</label>
+                                 <div class="date-picker-small"><input type="date" class="first-date" data-key="${key}" value="${firstDateVal}"></div></div>`;
+                
+                let revsHtml = `<div class="rev-group">`;
+                for (let r=0; r<8; r++) {
+                    let revChecked = entry.revs[r].completed ? "checked" : "";
+                    let revDate = entry.revs[r].date || "";
+                    revsHtml += `<div style="display:flex; flex-direction:column; align-items:center; margin:2px;">
+                                    <label class="rev-btn"><input type="checkbox" class="rev-cb" data-key="${key}" data-rev="${r}" ${revChecked}> R${r+1}</label>
+                                    <input type="date" class="rev-date" data-key="${key}" data-rev="${r}" value="${revDate}" style="width:95px; background:#1e2a32; border-radius:16px; border:1px solid #3a4552; color:#ddd; padding:2px 4px;">
+                                </div>`;
+                }
+                revsHtml += `</div>`;
+                
+                let mainsChecked = entry.mains ? "checked" : "";
+                let mainsDateVal = entry.mainsDate || "";
+                let mainsHtml = `<div><label class="mains-btn"><input type="checkbox" class="mains-cb" data-key="${key}" ${mainsChecked}> Answer</label>
+                                <div class="date-picker-small"><input type="date" class="mains-date" data-key="${key}" value="${mainsDateVal}"></div></div>`;
+                
+                html += `<tr><td class="topic-cell">${escapeHtml(topic)}</td><td>${firstHtml}</td><td>${revsHtml}</td><td>${mainsHtml}</td></tr>`;
+                topicCounter++;
+            }
+            html += `</tbody></table></div>`;
+        }
+        container.innerHTML = html;
+        attachSubjectEvents();
+        updateProgressUI(subj);
+    }
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    function attachSubjectEvents() {
+        // first reading
+        document.querySelectorAll(".first-cb").forEach(cb => {
+            cb.removeEventListener("change", handleFirstChange);
+            cb.addEventListener("change", handleFirstChange);
+        });
+        document.querySelectorAll(".first-date").forEach(inp => {
+            inp.removeEventListener("change", handleFirstDate);
+            inp.addEventListener("change", handleFirstDate);
+        });
+        // revisions
+        document.querySelectorAll(".rev-cb").forEach(cb => {
+            cb.removeEventListener("change", handleRevChange);
+            cb.addEventListener("change", handleRevChange);
+        });
+        document.querySelectorAll(".rev-date").forEach(inp => {
+            inp.removeEventListener("change", handleRevDate);
+            inp.addEventListener("change", handleRevDate);
+        });
+        // mains
+        document.querySelectorAll(".mains-cb").forEach(cb => {
+            cb.removeEventListener("change", handleMainsChange);
+            cb.addEventListener("change", handleMainsChange);
+        });
+        document.querySelectorAll(".mains-date").forEach(inp => {
+            inp.removeEventListener("change", handleMainsDate);
+            inp.addEventListener("change", handleMainsDate);
+        });
+    }
+
+    function getCurrentData() { return subjectDataCache[currentSubject]; }
+
+    function handleFirstChange(e) {
+        let key = e.target.getAttribute("data-key");
+        let data = getCurrentData();
+        if (data[key]) { data[key].first = e.target.checked; saveSubject(currentSubject); renderCurrentSubject(); }
+    }
+    function handleFirstDate(e) {
+        let key = e.target.getAttribute("data-key");
+        let data = getCurrentData();
+        if (data[key]) { data[key].firstDate = e.target.value; saveSubject(currentSubject); }
+    }
+    function handleRevChange(e) {
+        let key = e.target.getAttribute("data-key");
+        let revIdx = parseInt(e.target.getAttribute("data-rev"));
+        let data = getCurrentData();
+        if (data[key] && !isNaN(revIdx)) { data[key].revs[revIdx].completed = e.target.checked; saveSubject(currentSubject); renderCurrentSubject(); }
+    }
+    function handleRevDate(e) {
+        let key = e.target.getAttribute("data-key");
+        let revIdx = parseInt(e.target.getAttribute("data-rev"));
+        let data = getCurrentData();
+        if (data[key] && !isNaN(revIdx)) { data[key].revs[revIdx].date = e.target.value; saveSubject(currentSubject); }
+    }
+    function handleMainsChange(e) {
+        let key = e.target.getAttribute("data-key");
+        let data = getCurrentData();
+        if (data[key]) { data[key].mains = e.target.checked; saveSubject(currentSubject); renderCurrentSubject(); }
+    }
+    function handleMainsDate(e) {
+        let key = e.target.getAttribute("data-key");
+        let data = getCurrentData();
+        if (data[key]) { data[key].mainsDate = e.target.value; saveSubject(currentSubject); }
+    }
+
+    function updateProgressUI(subj) {
+        let data = subjectDataCache[subj];
+        if (!data) return;
+        let totalTopics = 0;
+        for (let sec of SUBJECTS[subj].sections) totalTopics += sec.topics.length;
+        let totalChecks = totalTopics * 10;
+        let completed = 0;
+        for (let key in data) {
+            let d = data[key];
+            if (d.first) completed++;
+            for (let r of d.revs) if (r.completed) completed++;
+            if (d.mains) completed++;
+        }
+        let percent = totalChecks === 0 ? 0 : Math.floor((completed / totalChecks) * 100);
+        document.getElementById("activePercent").innerText = percent;
+        document.getElementById("activeProgressFill").style.width = percent + "%";
+        document.getElementById("progressDetailText").innerHTML = `✅ ${completed} / ${totalChecks} tasks done (1st read + 8 revs + mains) for ${SUBJECTS[subj].name}. Dates stored.`;
+    }
+
+    function resetCurrentSubject() {
+        if (confirm(`⚠️ Delete ALL progress for ${SUBJECTS[currentSubject].name}? This removes checkboxes & dates.`)) {
+            subjectDataCache[currentSubject] = buildEmptyTrackerForSubject(currentSubject);
+            saveSubject(currentSubject);
+            renderCurrentSubject();
+        }
+    }
+
+    function applyGlobalDateToCurrentSubject() {
+        let globalDate = document.getElementById("globalDefaultDate").value;
+        if (!globalDate) return;
+        let data = getCurrentData();
+        if (!data) return;
+        let count = 0;
+        for (let key in data) {
+            if (!data[key].firstDate || data[key].firstDate === "") { data[key].firstDate = globalDate; count++; }
+            for (let r=0; r<8; r++) {
+                if (!data[key].revs[r].date || data[key].revs[r].date === "") { data[key].revs[r].date = globalDate; count++; }
+            }
+            if (!data[key].mainsDate || data[key].mainsDate === "") { data[key].mainsDate = globalDate; count++; }
+        }
+        if (count > 0) { saveSubject(currentSubject); renderCurrentSubject(); alert(`Applied ${globalDate} to ${count} empty date fields.`); }
+        else alert("No empty date fields in current subject.");
+    }
+
+    function switchTab(subject) {
+        currentSubject = subject;
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+            if (btn.getAttribute("data-subject") === subject) btn.classList.add("active");
+            else btn.classList.remove("active");
+        });
+        renderCurrentSubject();
+    }
+
+    // event binding for tabs + buttons
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => switchTab(btn.getAttribute("data-subject")));
+    });
+    document.getElementById("resetSubjectBtn").addEventListener("click", resetCurrentSubject);
+    document.getElementById("applyGlobalDateBtn").addEventListener("click", applyGlobalDateToCurrentSubject);
+
+    // initial load
+    loadSubject("history");
+    renderCurrentSubject();
+</script>
+</body>
+</html>
+```
