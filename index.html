@@ -1,0 +1,648 @@
+Here is an HTML document that creates a complete UPSC Zoology Optional syllabus tracker based on your PDF. It includes 8 revision cycles, a 1st reading checkbox, mains answer practice, and manual date entry for every revision.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>UPSC Zoology Optional: 8-Revision Tracker | Paper 1 & 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f4f7f2;
+            padding: 20px;
+            color: #1e3a2f;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2d6a4f;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .sub {
+            text-align: center;
+            color: #40916c;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .badge-group {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .badge-group span {
+            background: white;
+            padding: 5px 14px;
+            border-radius: 30px;
+            margin: 0 5px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .timeline-card {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #cfe3cf;
+        }
+        .date-panel {
+            background: #eaf4e4;
+            padding: 15px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .date-panel input {
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid #bdd9b5;
+            background: white;
+        }
+        .date-panel button {
+            background: #2d6a4f;
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .rev-card {
+            background: #f8fdf5;
+            border-radius: 18px;
+            padding: 12px;
+            text-align: center;
+            border-top: 4px solid #52b788;
+        }
+        .rev-num {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            background: #eaf4e4;
+            padding: 12px 18px;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 2px solid #c8e0c0;
+            color: #1e5a3a;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+        }
+        th {
+            background: #f0f7ec;
+            padding: 10px 6px;
+            text-align: left;
+            border-bottom: 1px solid #d4e8cc;
+            font-weight: 700;
+        }
+        td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #eef3ea;
+            vertical-align: middle;
+        }
+        .topic-cell {
+            font-weight: 500;
+            color: #2c5a2e;
+        }
+        .rev-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .rev-btn {
+            background: #ecf5e7;
+            border-radius: 25px;
+            padding: 3px 8px;
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        .rev-btn input {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            accent-color: #52b788;
+        }
+        .first-btn {
+            background: #d4e8cc;
+            border-radius: 25px;
+            padding: 3px 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .mains-btn {
+            background: #f0e8df;
+            border-radius: 25px;
+            padding: 3px 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .date-picker-small {
+            font-size: 10px;
+            background: #fef9e6;
+            border-radius: 20px;
+            padding: 2px 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 5px;
+        }
+        .date-picker-small input {
+            width: 85px;
+            font-size: 9px;
+            padding: 2px 4px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+        }
+        .progress-container {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .progress-bar {
+            background: #e2e8dc;
+            border-radius: 20px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-fill {
+            background: #2d6a4f;
+            width: 0%;
+            height: 100%;
+            transition: width 0.2s;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .reset-btn {
+            background: #ffe8e0;
+            border: 1px solid #dcb89e;
+            padding: 6px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            color: #b33f22;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            font-size: 11px;
+            color: #6c8b6e;
+            margin-top: 20px;
+        }
+        @media (max-width: 750px) {
+            body { padding: 10px; }
+            .rev-btn { padding: 2px 5px; font-size: 9px; }
+            td { font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🧬 UPSC Zoology Optional: 8-Revision Mastery</h1>
+    <div class="sub">Paper 1 + Paper 2 | Complete Syllabus as per UPSC</div>
+    <div class="badge-group">
+        <span>📖 1st Reading</span>
+        <span>🔄 8 Revisions</span>
+        <span>✍️ Mains Answer</span>
+        <span>📅 Manual Date per Revision</span>
+    </div>
+
+    <!-- Timeline overview card -->
+    <div class="timeline-card">
+        <h3>📅 8-Revision Timeline (set default start, but you can edit each revision's date below)</h3>
+        <div class="date-panel">
+            <label>Global 1st Reading Start (optional):</label>
+            <input type="date" id="globalStartDate" value="2025-04-01">
+            <button id="applyGlobalDate">Apply to All Empty Dates</button>
+            <span style="font-size:12px;">⚠️ Only fills missing dates, won't overwrite custom dates.</span>
+        </div>
+        <div id="timelinePreview" style="font-size:12px; background:#f0f5ec; padding:10px; border-radius:16px; margin-top:8px;">
+            💡 Each topic has its own 1st Reading + 8 Revisions. Click on any date field to set a specific target date for that revision.
+        </div>
+    </div>
+
+    <!-- Syllabus Tracker will be injected here -->
+    <div id="zoologyTrackerContainer"></div>
+
+    <!-- Progress -->
+    <div class="progress-container">
+        <div class="stats-row">
+            <div><strong>📊 Overall Progress:</strong> <span id="zoologyPercent">0</span>%</div>
+            <button class="reset-btn" id="resetZoologyBtn">🗑️ Reset All Zoology Progress</button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="zoologyProgressFill"></div>
+        </div>
+        <div id="zoologyProgressDetail" style="margin-top: 8px; font-size: 12px;"></div>
+    </div>
+    <footer>
+        ✅ Based on official UPSC Zoology Optional syllabus (Paper 1: Non-chordata, Chordata, Ecology, Ethology, Economic Zoology, Biostatistics; Paper 2: Cell Biology, Genetics, Evolution, Systematics, Biochemistry, Physiology, Developmental Biology).<br>
+        Each topic: 1st Reading + 8 Revisions + Mains Answer. Dates are fully customizable per revision. Auto-saves in browser.
+    </footer>
+</div>
+
+<script>
+    // ==================== COMPLETE ZOOLOGY SYLLABUS (from PDF) ====================
+    const ZOOLOGY_SECTIONS = [
+        { name: "📘 Paper 1: Non-Chordata & Chordata", topics: [
+            "Protozoa: Locomotion, nutrition, reproduction; Paramaecium, Monocystis, Plasmodium, Leishmania",
+            "Porifera: Skeleton, canal system, reproduction",
+            "Cnidaria: Polymorphism, coral reefs, metagenesis; Obelia, Aurelia",
+            "Platyhelminthes: Parasitic adaptation; Fasciola, Taenia (pathogenic symptoms)",
+            "Nemathelminthes: Ascaris, Wuchereria – parasitic adaptation",
+            "Annelida: Coelom, metamerism; Nereis, Earthworm, Leech",
+            "Arthropoda: Larval forms, vision/respiration, mouthparts in insects, metamorphosis, social insects (Apis, termites)",
+            "Mollusca: Feeding, locomotion, torsion; Lamellidens, Pila, Sepia",
+            "Echinodermata: Larval forms; Asterias",
+            "Protochordata: Origin of chordates; Branchiostoma, Herdmania",
+            "Pisces: Respiration, locomotion, migration",
+            "Amphibia: Origin of tetrapods, parental care, paedomorphosis",
+            "Reptilia: Skull types, Sphenodon, crocodiles",
+            "Aves: Origin of birds, flight adaptation, migration",
+            "Mammalia: Origin, dentition, egg-laying mammals, pouched mammals, aquatic mammals, primates",
+            "Comparative anatomy: Integument, endoskeleton, digestive, respiratory, circulatory, urinogenital, brain, sense organs"
+        ]},
+        { name: "🌿 Paper 1: Ecology & Ethology", topics: [
+            "Ecosystem: Structure, function, types, ecological succession, ecological adaptation",
+            "Population: Characteristics, dynamics, stabilization",
+            "Biodiversity & conservation, wildlife of India, remote sensing",
+            "Biosphere: Biomes, biogeochemical cycles, greenhouse effect",
+            "Environmental pollution, biodegradation, impact on biosphere",
+            "Ethology: Sensory filtering, sign stimuli, learning, instinct, imprinting",
+            "Role of hormones & pheromones, crypsis, predator tactics, social hierarchies",
+            "Orientation, navigation, homing, biological rhythms (circadian, tidal, seasonal)",
+            "Methods: sexual conflict, selfishness, kinship, altruism"
+        ]},
+        { name: "💰 Paper 1: Economic Zoology & Biostatistics", topics: [
+            "Apiculture, sericulture, lac culture, carp culture, pearl culture, prawn culture, vermiculture",
+            "Infectious diseases: malaria, filaria, TB, cholera, AIDS – vectors, pathogens, prevention",
+            "Cattle & livestock diseases (helminthes), vectors: ticks, mites, Tabanus, Stomoxys",
+            "Pests: sugarcane (Pyrilla perpusilla), oil seed (Achaea janata), rice (Sitophilus oryzae)",
+            "Transgenic animals, medical biotechnology, genetic counseling, gene therapy",
+            "Forensic biotechnology",
+            "Biostatistics: Design of experiments, null hypothesis, correlation, regression, central tendency, chi-square, t-test, F-test"
+        ]},
+        { name: "🔬 Paper 1: Instrumentation", topics: [
+            "Spectrophotometer, phase contrast & fluorescence microscopy",
+            "Radioactive tracer, ultracentrifuge, gel electrophoresis",
+            "PCR, ELISA, FISH, chromosome painting, TEM, SEM"
+        ]},
+        { name: "🧬 Paper 2: Cell Biology & Genetics", topics: [
+            "Cell structure & organelles (nucleus, mitochondria, ER, Golgi, ribosomes, lysosomes)",
+            "Cell division: mitosis, meiosis, mitotic spindle, chromosome movements",
+            "Polytene & lampbrush chromosomes, chromatin organization, heterochromatin",
+            "Cell cycle regulation, nucleic acid topology, DNA replication, transcription, translation",
+            "Modern concept of gene, split gene, genetic code, sex determination (Drosophila, man)",
+            "Mendel's laws, linkage, recombination, multiple alleles, blood groups, pedigree analysis",
+            "Mutations & mutagenesis, recombinant DNA technology (plasmids, cosmids, cloning)",
+            "Gene regulation in prokaryotes & eukaryotes, signal molecules, cell death",
+            "RFLP, RAPD, AFLP, DNA fingerprinting, ribozyme, human genome project, genomics, proteomics"
+        ]},
+        { name: "🦋 Paper 2: Evolution & Systematics", topics: [
+            "Theories of origin of life, natural selection, role of mutations, evolutionary patterns",
+            "Molecular drive, mimicry, variation, isolation, speciation",
+            "Evolution of horse, elephant, man (fossil data), Hardy-Weinberg Law",
+            "Continental drift & distribution of animals",
+            "Systematics: Zoological nomenclature, ICZN, cladistics, molecular taxonomy, biodiversity"
+        ]},
+        { name: "⚗️ Paper 2: Biochemistry & Physiology", topics: [
+            "Structure of carbohydrates, fats, proteins, nucleic acids",
+            "Bioenergetics: Glycolysis, Kreb cycle, oxidative phosphorylation, ATP cycle, cAMP",
+            "Hormones: steroid & peptide, biosynthesis, functions",
+            "Enzymes: types, mechanism, vitamins & coenzymes, immunoglobulins, immunity",
+            "Blood composition, blood groups, Rh factor, coagulation, iron metabolism, acid-base balance",
+            "Haemoglobin: oxygen & CO2 transport, digestion & absorption (salivary glands, liver, pancreas)",
+            "Excretion: nephron, urine formation, osmoregulation",
+            "Muscles: types, contraction mechanism, exercise effects",
+            "Neuron: nerve impulse, synaptic transmission, neurotransmitters",
+            "Vision, hearing, olfaction in man, reproduction physiology, puberty, menopause"
+        ]},
+        { name: "🥚 Paper 2: Developmental Biology", topics: [
+            "Gametogenesis: spermatogenesis, oogenesis, totipotency, fertilization",
+            "Morphogenesis, blastogenesis, fate maps, gastrulation (frog & chick)",
+            "Homeotic genes, development of eye & heart, placenta in mammals",
+            "Cell lineage, cell interaction, teratogenesis, thyroxine in metamorphosis",
+            "Paedogenesis, neoteny, aging, developmental genes in man",
+            "IVF, embryo transfer, cloning, stem cells (sources, types, applications), biogenetic law"
+        ]}
+    ];
+
+    // Build tracker: each topic has firstReading, 8 revs with custom dates, mainsDone
+    function buildEmptyZoologyTracker() {
+        let tracker = {};
+        let id = 0;
+        for (let sec of ZOOLOGY_SECTIONS) {
+            for (let topic of sec.topics) {
+                let key = id + "_" + topic;
+                tracker[key] = {
+                    first: false,
+                    firstDate: "",
+                    revs: [], // array of {completed: bool, date: string}
+                    mains: false,
+                    mainsDate: ""
+                };
+                // initialize 8 revisions
+                let revArray = [];
+                for (let r = 0; r < 8; r++) {
+                    revArray.push({ completed: false, date: "" });
+                }
+                tracker[key].revs = revArray;
+                id++;
+            }
+        }
+        return tracker;
+    }
+
+    const ZOOLOGY_STORAGE_KEY = "upsc_zoology_8rev_dates_v2";
+    let zoologyData = {};
+
+    function loadZoologyTracker() {
+        let saved = localStorage.getItem(ZOOLOGY_STORAGE_KEY);
+        if (saved) {
+            try {
+                let parsed = JSON.parse(saved);
+                if (parsed && typeof parsed === "object") zoologyData = parsed;
+                else zoologyData = buildEmptyZoologyTracker();
+            } catch(e) { zoologyData = buildEmptyZoologyTracker(); }
+        } else {
+            zoologyData = buildEmptyZoologyTracker();
+        }
+        // migration / ensure each topic has 8 revs
+        let fresh = buildEmptyZoologyTracker();
+        for (let key in fresh) {
+            if (!zoologyData[key]) {
+                zoologyData[key] = fresh[key];
+            } else {
+                if (!zoologyData[key].revs || zoologyData[key].revs.length !== 8) {
+                    zoologyData[key].revs = fresh[key].revs;
+                }
+                if (zoologyData[key].firstDate === undefined) zoologyData[key].firstDate = "";
+                if (zoologyData[key].mainsDate === undefined) zoologyData[key].mainsDate = "";
+            }
+        }
+        saveZoologyTracker();
+    }
+
+    function saveZoologyTracker() {
+        localStorage.setItem(ZOOLOGY_STORAGE_KEY, JSON.stringify(zoologyData));
+        updateZoologyProgress();
+    }
+
+    function renderZoologyTracker() {
+        let container = document.getElementById("zoologyTrackerContainer");
+        if (!container) return;
+        let html = "";
+        let topicIdx = 0;
+        for (let sec of ZOOLOGY_SECTIONS) {
+            html += `<div class="section-card">
+                        <div class="section-title">${sec.name}</div>
+                        <table>
+                            <thead>
+                                <tr><th style="width:32%">📚 Topic</th>
+                                   <th style="width:14%">📖 1st Reading + Date</th>
+                                   <th style="width:40%">🔄 8 Revisions (R1-R8) with custom date</th>
+                                   <th style="width:14%">✍️ Mains Answer + Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+            for (let topic of sec.topics) {
+                let key = topicIdx + "_" + topic;
+                let data = zoologyData[key];
+                if (!data) {
+                    data = { first: false, firstDate: "", revs: Array(8).fill({completed:false, date:""}), mains: false, mainsDate: "" };
+                    zoologyData[key] = data;
+                }
+                // ensure revs length 8
+                while(data.revs.length < 8) data.revs.push({completed:false, date:""});
+                
+                let firstChecked = data.first ? "checked" : "";
+                let firstDateVal = data.firstDate || "";
+                let firstHtml = `<div><label class="first-btn"><input type="checkbox" class="zoology-first-cb" data-key="${key}" ${firstChecked}> R0</label>
+                                <div class="date-picker-small"><input type="date" class="first-date-input" data-key="${key}" value="${firstDateVal}" placeholder="date"></div></div>`;
+                
+                let revsHtml = `<div class="rev-group">`;
+                for (let r=0; r<8; r++) {
+                    let revChecked = data.revs[r].completed ? "checked" : "";
+                    let revDate = data.revs[r].date || "";
+                    revsHtml += `<div style="display:flex; flex-direction:column; align-items:center; margin:2px;">
+                                    <label class="rev-btn"><input type="checkbox" class="zoology-rev-cb" data-key="${key}" data-rev="${r}" ${revChecked}> R${r+1}</label>
+                                    <input type="date" class="rev-date-input" data-key="${key}" data-rev="${r}" value="${revDate}" style="width:95px; font-size:9px; margin-top:2px; border-radius:12px; border:1px solid #ccc;">
+                                </div>`;
+                }
+                revsHtml += `</div>`;
+                
+                let mainsChecked = data.mains ? "checked" : "";
+                let mainsDateVal = data.mainsDate || "";
+                let mainsHtml = `<div><label class="mains-btn"><input type="checkbox" class="zoology-mains-cb" data-key="${key}" ${mainsChecked}> Answer</label>
+                                <div class="date-picker-small"><input type="date" class="mains-date-input" data-key="${key}" value="${mainsDateVal}"></div></div>`;
+                
+                html += `<tr>
+                            <td class="topic-cell">${escapeHtml(topic)}</td>
+                            <td style="vertical-align:top">${firstHtml}</td>
+                            <td style="vertical-align:top">${revsHtml}</td>
+                            <td style="vertical-align:top">${mainsHtml}</td>
+                          </tr>`;
+                topicIdx++;
+            }
+            html += `</tbody>${"</table>"}</div>`;
+        }
+        container.innerHTML = html;
+        attachZoologyEvents();
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function attachZoologyEvents() {
+        // first reading checkboxes
+        document.querySelectorAll(".zoology-first-cb").forEach(cb => {
+            cb.removeEventListener("change", handleFirstChange);
+            cb.addEventListener("change", handleFirstChange);
+        });
+        // first reading date inputs
+        document.querySelectorAll(".first-date-input").forEach(inp => {
+            inp.removeEventListener("change", handleFirstDate);
+            inp.addEventListener("change", handleFirstDate);
+        });
+        // revision checkboxes
+        document.querySelectorAll(".zoology-rev-cb").forEach(cb => {
+            cb.removeEventListener("change", handleRevChange);
+            cb.addEventListener("change", handleRevChange);
+        });
+        // revision date inputs
+        document.querySelectorAll(".rev-date-input").forEach(inp => {
+            inp.removeEventListener("change", handleRevDate);
+            inp.addEventListener("change", handleRevDate);
+        });
+        // mains checkboxes
+        document.querySelectorAll(".zoology-mains-cb").forEach(cb => {
+            cb.removeEventListener("change", handleMainsChange);
+            cb.addEventListener("change", handleMainsChange);
+        });
+        // mains date inputs
+        document.querySelectorAll(".mains-date-input").forEach(inp => {
+            inp.removeEventListener("change", handleMainsDate);
+            inp.addEventListener("change", handleMainsDate);
+        });
+    }
+
+    function handleFirstChange(e) {
+        let key = e.target.getAttribute("data-key");
+        if (zoologyData[key]) {
+            zoologyData[key].first = e.target.checked;
+            saveZoologyTracker();
+            renderZoologyTracker();
+        }
+    }
+    function handleFirstDate(e) {
+        let key = e.target.getAttribute("data-key");
+        if (zoologyData[key]) {
+            zoologyData[key].firstDate = e.target.value;
+            saveZoologyTracker();
+        }
+    }
+    function handleRevChange(e) {
+        let key = e.target.getAttribute("data-key");
+        let revIdx = parseInt(e.target.getAttribute("data-rev"));
+        if (zoologyData[key] && !isNaN(revIdx)) {
+            zoologyData[key].revs[revIdx].completed = e.target.checked;
+            saveZoologyTracker();
+            renderZoologyTracker(); // re-render to keep sync
+        }
+    }
+    function handleRevDate(e) {
+        let key = e.target.getAttribute("data-key");
+        let revIdx = parseInt(e.target.getAttribute("data-rev"));
+        if (zoologyData[key] && !isNaN(revIdx)) {
+            zoologyData[key].revs[revIdx].date = e.target.value;
+            saveZoologyTracker();
+        }
+    }
+    function handleMainsChange(e) {
+        let key = e.target.getAttribute("data-key");
+        if (zoologyData[key]) {
+            zoologyData[key].mains = e.target.checked;
+            saveZoologyTracker();
+            renderZoologyTracker();
+        }
+    }
+    function handleMainsDate(e) {
+        let key = e.target.getAttribute("data-key");
+        if (zoologyData[key]) {
+            zoologyData[key].mainsDate = e.target.value;
+            saveZoologyTracker();
+        }
+    }
+
+    function updateZoologyProgress() {
+        let totalTopics = 0;
+        for (let s of ZOOLOGY_SECTIONS) totalTopics += s.topics.length;
+        let totalChecks = totalTopics * 10; // 1 first + 8 revs + 1 mains
+        let completed = 0;
+        for (let key in zoologyData) {
+            let d = zoologyData[key];
+            if (d.first) completed++;
+            for (let r of d.revs) if (r.completed) completed++;
+            if (d.mains) completed++;
+        }
+        let percent = totalChecks === 0 ? 0 : Math.floor((completed / totalChecks) * 100);
+        document.getElementById("zoologyPercent").innerText = percent;
+        document.getElementById("zoologyProgressFill").style.width = percent + "%";
+        document.getElementById("zoologyProgressDetail").innerHTML = `✅ ${completed} of ${totalChecks} tasks done (1st read + 8 revs + mains answers). Custom dates saved per revision.`;
+    }
+
+    function resetAllZoology() {
+        if (confirm("⚠️ DELETE all progress for Zoology Optional (Paper 1 & 2)? This removes all checkboxes and custom dates.")) {
+            zoologyData = buildEmptyZoologyTracker();
+            saveZoologyTracker();
+            renderZoologyTracker();
+            updateZoologyProgress();
+        }
+    }
+
+    function applyGlobalDateToEmpty() {
+        let globalDate = document.getElementById("globalStartDate").value;
+        if (!globalDate) return;
+        let count = 0;
+        for (let key in zoologyData) {
+            if (!zoologyData[key].firstDate || zoologyData[key].firstDate === "") {
+                zoologyData[key].firstDate = globalDate;
+                count++;
+            }
+            for (let r=0; r<8; r++) {
+                if (!zoologyData[key].revs[r].date || zoologyData[key].revs[r].date === "") {
+                    zoologyData[key].revs[r].date = globalDate;
+                    count++;
+                }
+            }
+            if (!zoologyData[key].mainsDate || zoologyData[key].mainsDate === "") {
+                zoologyData[key].mainsDate = globalDate;
+                count++;
+            }
+        }
+        if (count > 0) {
+            saveZoologyTracker();
+            renderZoologyTracker();
+            alert(`Applied date ${globalDate} to ${count} empty date fields.`);
+        } else {
+            alert("No empty date fields found.");
+        }
+    }
+
+    // initial load
+    loadZoologyTracker();
+    renderZoologyTracker();
+    updateZoologyProgress();
+
+    document.getElementById("resetZoologyBtn").addEventListener("click", resetAllZoology);
+    document.getElementById("applyGlobalDate").addEventListener("click", applyGlobalDateToEmpty);
+</script>
+</body>
+</html>
+```
